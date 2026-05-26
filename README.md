@@ -31,50 +31,41 @@ cpp-log-analyzer/
 - LICENSE
 - .gitignore
 
-## How to Compile
-
-Using g++:
-
-g++ main.cpp -o log-analyzer
-
 ## How to Run
 
 Run with the default sample log file:
 
-./log-analyzer
+`./log-analyzer`
 
 Or provide a custom log file:
 
-./log-analyzer sample.log
-
-On Windows PowerShell:
-
-g++ main.cpp -o log-analyzer.exe
-
-.\log-analyzer.exe sample.log
+`./log-analyzer sample.log`
 
 You can also specify both input and output files:
 
-```bash
-./log-analyzer sample.log analysis_report.txt
+`./log-analyzer sample.log analysis_report.txt`
+
+On Windows PowerShell:
+
+`g++ main.cpp -o log-analyzer.exe`
+
+`.\log-analyzer.exe sample.log`
 
 ## Example Output
 
-```text
-==============================
-      Log Analysis Report      
-==============================
-Total log lines:  9
-INFO messages:    5
-WARNING messages: 2
-ERROR messages:   2
+Log Analysis Report
+
+Total log lines: 9  
+INFO messages: 5  
+WARNING messages: 2  
+ERROR messages: 2  
+System status: Needs attention  
 
 Detected errors:
+
 - 2026-05-26 10:00:15 ERROR Failed to connect to authentication service
 - 2026-05-26 10:00:30 ERROR Request failed with status code 500
-==============================
-```
-
+- 
 ## What I Practiced
 
 - Reading files in C++
