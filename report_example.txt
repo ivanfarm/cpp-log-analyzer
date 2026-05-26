@@ -1,10 +1,11 @@
 ==============================
-      Log Analysis Report
+      Log Analysis Report      
 ==============================
-Total log lines: 9
-INFO messages:   5
-WARNING messages:2
-ERROR messages:  2
+Total log lines:  9
+INFO messages:    5
+WARNING messages: 2
+ERROR messages:   2
+System status:    Needs attention
 
 Detected errors:
 - 2026-05-26 10:00:15 ERROR Failed to connect to authentication service
