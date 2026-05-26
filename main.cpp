@@ -2,7 +2,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <iomanip>
 
 struct LogStats {
     int totalLines = 0;
@@ -12,7 +11,7 @@ struct LogStats {
     std::vector<std::string> errorMessages;
 };
 
-bool contains(const std::string& line, const std::string& keyword) {
+bool containsKeyword(const std::string& line, const std::string& keyword) {
     return line.find(keyword) != std::string::npos;
 }
 
@@ -29,11 +28,11 @@ LogStats analyzeLogFile(const std::string& fileName) {
     while (std::getline(file, line)) {
         stats.totalLines++;
 
-        if (contains(line, "INFO")) {
+        if (containsKeyword(line, "INFO")) {
             stats.infoCount++;
-        } else if (contains(line, "WARNING")) {
+        } else if (containsKeyword(line, "WARNING")) {
             stats.warningCount++;
-        } else if (contains(line, "ERROR")) {
+        } else if (containsKeyword(line, "ERROR")) {
             stats.errorCount++;
             stats.errorMessages.push_back(line);
         }
@@ -42,20 +41,32 @@ LogStats analyzeLogFile(const std::string& fileName) {
     return stats;
 }
 
+std::string getSystemStatus(const LogStats& stats) {
+    if (stats.errorCount == 0) {
+        return "Healthy";
+    } else if (stats.errorCount <= 2) {
+        return "Needs attention";
+    } else {
+        return "Critical";
+    }
+}
+
 void printReport(const LogStats& stats) {
     std::cout << "==============================" << std::endl;
     std::cout << "      Log Analysis Report      " << std::endl;
     std::cout << "==============================" << std::endl;
 
-    std::cout << "Total log lines: " << stats.totalLines << std::endl;
-    std::cout << "INFO messages:   " << stats.infoCount << std::endl;
-    std::cout << "WARNING messages:" << stats.warningCount << std::endl;
-    std::cout << "ERROR messages:  " << stats.errorCount << std::endl;
+    std::cout << "Total log lines:  " << stats.totalLines << std::endl;
+    std::cout << "INFO messages:    " << stats.infoCount << std::endl;
+    std::cout << "WARNING messages: " << stats.warningCount << std::endl;
+    std::cout << "ERROR messages:   " << stats.errorCount << std::endl;
+    std::cout << "System status:    " << getSystemStatus(stats) << std::endl;
 
     std::cout << std::endl;
 
     if (!stats.errorMessages.empty()) {
         std::cout << "Detected errors:" << std::endl;
+
         for (const auto& error : stats.errorMessages) {
             std::cout << "- " << error << std::endl;
         }
@@ -66,15 +77,58 @@ void printReport(const LogStats& stats) {
     std::cout << "==============================" << std::endl;
 }
 
-int main(int argc, char* argv[]) {
-    std::string fileName = "sample.log";
+void saveReportToFile(const LogStats& stats, const std::string& outputFileName) {
+    std::ofstream reportFile(outputFileName);
 
-    if (argc > 1) {
-        fileName = argv[1];
+    if (!reportFile.is_open()) {
+        std::cerr << "Error: Could not create report file: " << outputFileName << std::endl;
+        return;
     }
 
-    LogStats stats = analyzeLogFile(fileName);
+    reportFile << "==============================" << std::endl;
+    reportFile << "      Log Analysis Report      " << std::endl;
+    reportFile << "==============================" << std::endl;
+
+    reportFile << "Total log lines:  " << stats.totalLines << std::endl;
+    reportFile << "INFO messages:    " << stats.infoCount << std::endl;
+    reportFile << "WARNING messages: " << stats.warningCount << std::endl;
+    reportFile << "ERROR messages:   " << stats.errorCount << std::endl;
+    reportFile << "System status:    " << getSystemStatus(stats) << std::endl;
+
+    reportFile << std::endl;
+
+    if (!stats.errorMessages.empty()) {
+        reportFile << "Detected errors:" << std::endl;
+
+        for (const auto& error : stats.errorMessages) {
+            reportFile << "- " << error << std::endl;
+        }
+    } else {
+        reportFile << "No errors detected." << std::endl;
+    }
+
+    reportFile << "==============================" << std::endl;
+}
+
+int main(int argc, char* argv[]) {
+    std::string inputFileName = "sample.log";
+    std::string outputFileName = "analysis_report.txt";
+
+    if (argc > 1) {
+        inputFileName = argv[1];
+    }
+
+    if (argc > 2) {
+        outputFileName = argv[2];
+    }
+
+    LogStats stats = analyzeLogFile(inputFileName);
+
     printReport(stats);
+    saveReportToFile(stats, outputFileName);
+
+    std::cout << std::endl;
+    std::cout << "Report saved to: " << outputFileName << std::endl;
 
     return 0;
 }
