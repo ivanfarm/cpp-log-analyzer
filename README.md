@@ -53,6 +53,11 @@ g++ main.cpp -o log-analyzer.exe
 
 .\log-analyzer.exe sample.log
 
+You can also specify both input and output files:
+
+```bash
+./log-analyzer sample.log analysis_report.txt
+
 ## Example Output
 
 ```text
