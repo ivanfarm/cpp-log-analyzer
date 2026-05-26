@@ -55,21 +55,20 @@ g++ main.cpp -o log-analyzer.exe
 
 ## Example Output
 
-==============================  
-Log Analysis Report  
-==============================  
-
-Total log lines: 9  
-INFO messages: 5  
-WARNING messages: 2  
-ERROR messages: 2  
+```text
+==============================
+      Log Analysis Report      
+==============================
+Total log lines:  9
+INFO messages:    5
+WARNING messages: 2
+ERROR messages:   2
 
 Detected errors:
-
 - 2026-05-26 10:00:15 ERROR Failed to connect to authentication service
 - 2026-05-26 10:00:30 ERROR Request failed with status code 500
-
 ==============================
+```
 
 ## What I Practiced
 
